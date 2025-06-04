@@ -12,24 +12,13 @@ import {
   waitFor,
 } from "@motion-canvas/core";
 import { Window, WindowStyle } from "@hhenrichsen/canvas-commons";
-import { event } from "../reference";
+import { event, leadDev, unlocks, rendezvous } from "../reference";
 
 export default makeScene2D(function* (view) {
   const window = createRef<Window>();
   const rect = createRef<Rect>();
   const code = createRef<Code>();
   const windowWidth = createSignal(() => (view.width() * 90) / 100);
-  const leadDev = Object.entries(event.leadDev)
-    .map(([k, v]) => {
-      if (Array.isArray(v))
-        return `\t\t${k}: [${v.map((v) => `"${v}"`).join(", ")}],`;
-      return `\t\t${k}: "${v}",`;
-    })
-    .join("\n");
-  const unlocks = event.unlocks.map((u) => `\n\t\t"${u}",`).join("");
-  const rendezvous = Object.entries(event.rendezvous)
-    .map(([k, v]) => `\t\t${k}: ${typeof v === "number" ? v : `"${v}"`},`)
-    .join("\n");
 
   view.fill("#FBC029");
   view.add(
@@ -49,6 +38,8 @@ export default makeScene2D(function* (view) {
       </Window>
     </>,
   );
+
+  yield* waitFor(1.5);
 
   yield* type(code().code, "export const eventByIrawo = {};");
   yield* code().code.insert([0, 29], 0.05)`\n`;

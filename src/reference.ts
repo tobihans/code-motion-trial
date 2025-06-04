@@ -18,3 +18,15 @@ export const event = {
     accessFee: 0,
   },
 };
+
+export const leadDev = Object.entries(event.leadDev)
+  .map(([k, v]) => {
+    if (Array.isArray(v))
+      return `\t\t${k}: [${v.map((v) => `"${v}"`).join(", ")}],`;
+    return `\t\t${k}: "${v}",`;
+  })
+  .join("\n");
+export const unlocks = event.unlocks.map((u) => `\n\t\t"${u}",`).join("");
+export const rendezvous = Object.entries(event.rendezvous)
+  .map(([k, v]) => `\t\t${k}: ${typeof v === "number" ? v : `"${v}"`},`)
+  .join("\n");

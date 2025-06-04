@@ -7,6 +7,7 @@ import { HighlightStyle } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 
 import "./app.css";
+import audio from "./audio/keyboarding.mp3";
 
 Code.defaultHighlighter = new LezerHighlighter(
   parser,
@@ -20,5 +21,6 @@ Code.defaultHighlighter = new LezerHighlighter(
 );
 
 export default makeProject({
+  audio,
   scenes: [example],
 });
