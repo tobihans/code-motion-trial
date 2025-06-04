@@ -6,6 +6,8 @@ import example from "./scenes/example?scene";
 import { HighlightStyle } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 
+import "./app.css";
+
 Code.defaultHighlighter = new LezerHighlighter(
   parser,
   HighlightStyle.define([
