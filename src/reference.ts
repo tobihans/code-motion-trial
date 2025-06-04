@@ -1,5 +1,5 @@
 // This is a just used as reference to the code being animated.
-const eventByIrawo = {
+export const event = {
   title: "Coder avec l'IA",
   leadDev: {
     name: "Boulama Kandine",
@@ -8,13 +8,13 @@ const eventByIrawo = {
     credits: ["tinq.ai", "spellbox.app"],
   },
   unlocks: [
-    "👉🏿 Les outils IA à vraiment utiliser en 2025",
-    "👉🏿 Comment coder plus vite, clean et sans prise de tête",
-    "👉🏿 Les réflexes pour rester compétitif.ve dans le game",
+    "Les outils IA à vraiment utiliser en 2025 ツ",
+    "Comment coder plus vite, clean et sans prise de tête {◕ ◡ ◕}",
+    "Les réflexes pour rester compétitif.ve dans le game (⌐■_■)",
   ],
   rendezvous: {
     dateTime: "2025-06-05T19:00:00Z",
-    entryPoint: "https://bit.ly/CodexIA_w",
+    entryPoint: "https://bit.ly/CodexIA",
     accessFee: 0,
   },
 };

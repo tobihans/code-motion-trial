@@ -1,12 +1,35 @@
-import { Code, Rect, makeScene2D, word } from "@motion-canvas/2d";
-import { createRef, createSignal, waitFor } from "@motion-canvas/core";
+import {
+  Code,
+  CodeSignal,
+  CodeTag,
+  Rect,
+  makeScene2D,
+} from "@motion-canvas/2d";
+import {
+  createRef,
+  createSignal,
+  ThreadGenerator,
+  waitFor,
+} from "@motion-canvas/core";
 import { Window, WindowStyle } from "@hhenrichsen/canvas-commons";
+import { event } from "../reference";
 
 export default makeScene2D(function* (view) {
   const window = createRef<Window>();
   const rect = createRef<Rect>();
   const code = createRef<Code>();
   const windowWidth = createSignal(() => (view.width() * 90) / 100);
+  const leadDev = Object.entries(event.leadDev)
+    .map(([k, v]) => {
+      if (Array.isArray(v))
+        return `\t\t${k}: [${v.map((v) => `"${v}"`).join(", ")}],`;
+      return `\t\t${k}: "${v}",`;
+    })
+    .join("\n");
+  const unlocks = event.unlocks.map((u) => `\n\t\t"${u}",`).join("");
+  const rendezvous = Object.entries(event.rendezvous)
+    .map(([k, v]) => `\t\t${k}: ${typeof v === "number" ? v : `"${v}"`},`)
+    .join("\n");
 
   view.fill("#FBC029");
   view.add(
@@ -27,48 +50,63 @@ export default makeScene2D(function* (view) {
     </>,
   );
 
-  for (const char of "const eventByIrawo = {\n};") {
-    yield* code().code.append(char, 0.05);
-  }
-
-  yield* code().code.insert([1, 0], 0.45)`\ttitle: "Coder avec l\'IA",\n`;
-  yield* code().code.insert([2, 0], 0.25)`\tleadDev: {\n\t}\n`;
-  yield* code().code.insert([3, 0], 0.25)`\t\tname: "Boulama Kandine",\n`;
+  yield* type(code().code, "export const eventByIrawo = {};");
+  yield* code().code.insert([0, 29], 0.05)`\n`;
+  yield* type(code().code, `\n\ttitle: "${event.title}",`, [0, 29]);
+  yield* type(code().code, "\n\tleadDev: {},", [1, 11 + event.title.length]);
+  yield* code().code.insert([2, 11], 0.05)`\n\t`;
+  yield* type(code().code, `\n${leadDev}`, [2, 11]);
+  yield* type(code().code, `\n\tunlocks: [],`, [
+    3 + Object.keys(event.leadDev).length,
+    3,
+  ]);
   yield* code().code.insert(
-    [4, 0],
-    0.25,
-  )`\t\ttitle: "Ingénieur Aérospatial & IA",\n`;
+    [4 + Object.keys(event.leadDev).length, 11],
+    0.05,
+  )`\n\t`;
+  yield* type(code().code, unlocks, [
+    4 + Object.keys(event.leadDev).length,
+    11,
+  ]);
+  yield* type(code().code, `\n\trendezvous: {},`, [
+    5 + Object.keys(event.leadDev).length + event.unlocks.length,
+    3,
+  ]);
   yield* code().code.insert(
-    [5, 0],
-    0.25,
-  )`\t\tstack: ["Machine Learning", "AI", "Cybersec"],\n`;
-  yield* code().code.replace(word(6, 1, 1), 0.1)`},\n`;
-  yield* code().code.insert([7, 0], 0.25)`\tunlocks: []`;
-  yield* code().code.replace(word(7, 11, 1), 0.1)`\n\n\t],`;
-  yield* code().code.insert(
-    [8, 0],
-    0.25,
-  )`\t\t"👉🏿 Les outils IA à vraiment utiliser en 2025",\n`;
-  yield* code().code.insert(
-    [9, 0],
-    0.25,
-  )`\t\t"👉🏿 Comment coder plus vite, clean et sans prise de tête",\n`;
-  yield* code().code.insert(
-    [10, 0],
-    0.25,
-  )`\t\t"👉🏿 Les réflexes pour rester compétitif.ve dans le game",`;
-  yield* code().code.replace(word(11, 1), 0.1)`],\n\n`;
-  yield* code().code.insert([12, 0], 0.25)`\trendezvous: {\n\t},`;
-  yield* code().code.replace(word(13, 1), 0.1)`\n\t},\n`;
-  yield* code().code.insert(
-    [13, 0],
-    0.25,
-  )`\t\tdateTime: "2025-06-05T19:00:00Z",\n`;
-  yield* code().code.insert(
-    [14, 0],
-    0.25,
-  )`\t\tentryPoint: "https://bit.ly/CodexIA",\n`;
-  yield* code().code.insert([15, 0], 0.25)`\t\taccessFee: 0,`;
+    [6 + Object.keys(event.leadDev).length + event.unlocks.length, 14],
+    0.05,
+  )`\n\t`;
+  yield* type(code().code, `\n${rendezvous}`, [
+    6 + Object.keys(event.leadDev).length + event.unlocks.length,
+    14,
+  ]);
 
   yield* waitFor(4);
 });
+
+function* type(
+  code: CodeSignal<Code>,
+  text: string,
+  location: [number, number] | null = null,
+  typingSpeed: number = 0.05,
+): ThreadGenerator {
+  if (location === null) {
+    for (const char of text) {
+      yield* code.append(char as CodeTag, typingSpeed);
+    }
+    return;
+  }
+
+  let [line, column] = location;
+
+  for (const char of text) {
+    yield* code.insert([line, column], char as CodeTag, typingSpeed);
+
+    if (char == "\n") {
+      line++;
+      column = 0;
+    } else {
+      column++;
+    }
+  }
+}
