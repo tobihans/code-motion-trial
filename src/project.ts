@@ -2,7 +2,8 @@ import { makeProject } from "@motion-canvas/core";
 import { Code, LezerHighlighter } from "@motion-canvas/2d";
 import { parser } from "@lezer/javascript";
 
-import example from "./scenes/example?scene";
+import snippet from "./scenes/snippet?scene";
+import irawo from "./scenes/irawo?scene";
 import { HighlightStyle } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 
@@ -22,5 +23,5 @@ Code.defaultHighlighter = new LezerHighlighter(
 
 export default makeProject({
   audio,
-  scenes: [example],
+  scenes: [snippet, irawo],
 });

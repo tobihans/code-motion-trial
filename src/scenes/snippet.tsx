@@ -53,7 +53,7 @@ export default makeScene2D(function* (view) {
   ]);
   yield* code().code.insert(
     [4 + Object.keys(event.leadDev).length, 11],
-    0.05,
+    0.055,
   )`\n\t`;
   yield* type(code().code, unlocks, [
     4 + Object.keys(event.leadDev).length,
@@ -72,14 +72,14 @@ export default makeScene2D(function* (view) {
     14,
   ]);
 
-  yield* waitFor(4);
+  yield* waitFor(5);
 });
 
 function* type(
   code: CodeSignal<Code>,
   text: string,
   location: [number, number] | null = null,
-  typingSpeed: number = 0.05,
+  typingSpeed: number = 0.051,
 ): ThreadGenerator {
   if (location === null) {
     for (const char of text) {
