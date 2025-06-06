@@ -3,7 +3,6 @@ import { Code, LezerHighlighter } from "@motion-canvas/2d";
 import { parser } from "@lezer/javascript";
 
 import snippet from "./scenes/snippet?scene";
-import irawo from "./scenes/irawo?scene";
 import { HighlightStyle } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 
@@ -13,6 +12,7 @@ import audio from "./audio/keyboarding.mp3";
 Code.defaultHighlighter = new LezerHighlighter(
   parser,
   HighlightStyle.define([
+    // Colors from Paraiso theme.
     { tag: tags.keyword, color: "#d1564e" },
     { tag: tags.number, color: "#815ba4" },
     { tag: tags.string, color: "#dfab1a" },
@@ -23,5 +23,5 @@ Code.defaultHighlighter = new LezerHighlighter(
 
 export default makeProject({
   audio,
-  scenes: [snippet, irawo],
+  scenes: [snippet],
 });
